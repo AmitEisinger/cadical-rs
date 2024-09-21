@@ -51,7 +51,7 @@ void ccadical_freeze (CCaDiCaL *, int lit);
 int ccadical_frozen (CCaDiCaL *, int lit);
 void ccadical_melt (CCaDiCaL *, int lit);
 int ccadical_simplify (CCaDiCaL *);
-
+void ccadical_copy(CCaDiCaL*, CCaDiCaL*);
 /*------------------------------------------------------------------------*/
 
 // Support legacy names used before moving to more IPASIR conforming names.

@@ -40,3 +40,7 @@ extern "C"
     return ((Wrapper *)wrapper)->solver->limit(name, val);
   }
 }
+
+void ccadical_copy (CCaDiCaL *wrapper_of_this, CCaDiCaL *wrapper_of_other) {
+    return ((Wrapper *)wrapper_of_this)->solver->copy(*(((Wrapper*)wrapper_of_other)->solver));
+}

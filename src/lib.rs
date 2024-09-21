@@ -65,6 +65,8 @@ extern "C" {
     ) -> *const c_char;
     fn ccadical_configure(ptr: *mut c_void, name: *const c_char) -> c_int;
     fn ccadical_limit2(ptr: *mut c_void, name: *const c_char, limit: c_int) -> c_int;
+
+    fn ccadical_copy(ptr: *mut c_void, other: *mut c_void) -> c_void;
 }
 
 /// The CaDiCaL incremental SAT solver. The literals are unwrapped positive
@@ -78,7 +80,6 @@ extern "C" {
 /// assert_eq!(sat.solve(), Some(true));
 /// assert_eq!(sat.value(2), Some(true));
 /// ```
-#[derive(Clone)]
 pub struct Solver<C: Callbacks = Timeout> {
     ptr: *mut c_void,
     cbs: Option<Box<C>>,
@@ -542,5 +543,15 @@ impl Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.msg.fmt(f)
+    }
+}
+
+impl Clone for Solver{
+    fn clone(&self) -> Self {
+        let other = unsafe { ccadical_init() };
+        unsafe {
+            ccadical_copy(self.ptr,other)
+        };
+        Solver{ ptr: other, cbs: match &self.cbs { Some(value) => Some(value.clone()), None => None} }
     }
 }
