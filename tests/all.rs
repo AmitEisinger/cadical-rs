@@ -229,6 +229,25 @@ mod tests {
         assert_ne!(result, None);
         sat2.set_limit("decisions", -1).unwrap();
         let result = sat2.solve();
-        assert_ne!(result, Some(false));        
+        assert_ne!(result, Some(false));       
+    } 
+
+
+
+    #[test]
+    fn test_merge_from(){
+        let mut sat1 = Solver::new();
+
+        sat1.set_limit("decisions", 100).unwrap();
+        let result = sat1.solve();
+        assert_ne!(result, None);
+
+        let mut sat2 = pigeon_hole(5);
+
+        sat1.merge_from(&mut sat2);
+        
+        sat1.set_limit("decisions", 100).unwrap();
+        let result = sat1.solve();
+        assert_eq!(result, None);
     }
 }
