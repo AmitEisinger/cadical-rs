@@ -207,4 +207,28 @@ mod tests {
             assert_eq!(sat.value(-3), Some(false));
         }
     }
+    #[test]
+    fn create_copy_and_test_1(){
+        let sat: Solver = pigeon_hole(5);
+        let mut sat2: Solver = sat.clone();
+        sat2.set_limit("decisions", 100).unwrap();
+        let result = sat2.solve();
+        assert_eq!(result, None);
+        sat2.set_limit("decisions", -1).unwrap();
+        let result = sat2.solve();
+        assert_eq!(result, Some(false));        
+    }
+
+
+    #[test]
+    fn create_copy_and_test_2(){
+        let sat: Solver = pigeon_hole(5);
+        let mut sat2 : Solver= Solver::new();
+        sat2.set_limit("decisions", 100).unwrap();
+        let result = sat2.solve();
+        assert_ne!(result, None);
+        sat2.set_limit("decisions", -1).unwrap();
+        let result = sat2.solve();
+        assert_ne!(result, Some(false));        
+    }
 }
