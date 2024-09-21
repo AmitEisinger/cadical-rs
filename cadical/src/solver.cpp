@@ -1,4 +1,5 @@
 #include "internal.hpp"
+#include "cadical.hpp"
 
 /*------------------------------------------------------------------------*/
 
@@ -541,6 +542,12 @@ void Solver::add (int lit) {
     STATE (STEADY);
   LOG_API_CALL_END ("add", lit);
 }
+
+void Solver::merge_from (Solver &other) {
+  ClauseInsertion c{*this};
+  other.traverse_clauses(c);
+}
+
 
 void Solver::clause (int a) {
   REQUIRE_VALID_LIT (a);

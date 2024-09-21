@@ -67,6 +67,7 @@ extern "C" {
     fn ccadical_limit2(ptr: *mut c_void, name: *const c_char, limit: c_int) -> c_int;
 
     fn ccadical_copy(ptr: *mut c_void, other: *mut c_void) -> c_void;
+    fn ccadical_merge_from(ptr: *mut c_void, ptr: *mut c_void) -> c_void;
 }
 
 /// The CaDiCaL incremental SAT solver. The literals are unwrapped positive
@@ -553,5 +554,10 @@ impl Clone for Solver{
             ccadical_copy(self.ptr,other)
         };
         Solver{ ptr: other, cbs: match &self.cbs { Some(value) => Some(value.clone()), None => None} }
+    }
+}
+impl Solver{
+    pub fn merge_from(&self, other: &mut Solver ){
+        unsafe { ccadical_merge_from(self.ptr, other.ptr)};
     }
 }

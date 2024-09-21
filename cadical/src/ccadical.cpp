@@ -185,4 +185,10 @@ void ccadical_close_proof (CCaDiCaL *ptr) {
 void ccadical_conclude (CCaDiCaL *ptr) {
   ((Wrapper *) ptr)->solver->conclude ();
 }
+
+
+void ccadical_merge_from(CCaDiCaL * target,CCaDiCaL * origin){
+  ((Wrapper *) target)->solver->merge_from(*((Wrapper*)origin)->solver);
+}
+
 }

@@ -241,6 +241,11 @@ public:
   //
   void add (int lit);
 
+
+
+  void merge_from(Solver& other);
+
+
   // Here are functions simplifying clause addition. The given literals
   // should all be valid (different from 'INT_MIN' and different from '0').
   //
@@ -1190,6 +1195,27 @@ public:
   virtual ~ClauseIterator () {}
   virtual bool clause (const std::vector<int> &) = 0;
 };
+
+
+
+struct ClauseInsertion : ClauseIterator {
+  ClauseInsertion(Solver& target) : m_target(target){
+
+  }
+
+  bool clause(const std::vector<int> &c){
+    for (auto lit : c){
+      m_target.add(lit);
+    }
+    m_target.add(0); // To terminate the clause
+    return true;
+  }
+
+  Solver& m_target;
+};
+
+
+
 
 /*------------------------------------------------------------------------*/
 
